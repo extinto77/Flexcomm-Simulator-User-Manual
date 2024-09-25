@@ -31,12 +31,9 @@ This file is used to describe and configure the nodes present in the simulation.
 ```toml
 [node]
 type = "<type>"
-rank = 0
 ```
 
 - `type`: The type of this node. The available types are `host` and `switch`
-
-- `rank`: The MPI rank where this node will be created. The default value is `0`. This parameter is only required when running distributed simulations.
 
 ---
 
@@ -55,12 +52,15 @@ type = "host"
 [node]
 type = "switch"
 cpuCapacity = "1Gbps"
-mibs = ["energy"]
+zoneId = "Europe"
+# intfModes = ["1Gbps", "2400Mbps", "10Gbps"] # unused parameter
 ```
 
-- `cpuCapacity`: The CPU capacity of this switch. The default value is `"100Gb/s"`.  
+- `cpuCapacity`: The CPU capacity of this switch. The default value is `"100Gb/s"`.
+- `zoneId`: The zone where this switch is located. The default value is `""`.
+- `intfModes`: The available interface modes of this switch. The default value is `[]`.
 
-- `mibs`: A list containing the MIBS to be available in this switch. This parameter is only required when `MibLogger` is enabled. The default value is `[]`. 
+**At the moment, '`intfModes`' parameter have no impact.**
 
 ---
 
@@ -80,7 +80,7 @@ Reference a template:
 template = "<template name>"
 ```
 
-Define model:
+or define a new model:
 ```toml
 [node.chassis]
 model = "<model>"
@@ -96,13 +96,13 @@ Reference a template:
 template = "<template name>"
 ```
 
-Define model:
+Or define a new model:
 ```toml
 [node.interfaces]
 model = "<model>"
 #<model configs>
 ```
 
----
-
 For more details on how to define an energy model refer to [energy-templates.toml](energy-templates.md).
+
+---
