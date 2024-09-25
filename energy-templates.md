@@ -5,12 +5,12 @@ This file is used to describe and configure the templates for energy models pres
 ## Contents
 1. [File format](#file-format)
 2. [Configuring Chassis Energy Model](#configuring-chassis-energy-model)
-    1. [basic](#basic)
-    2. [cpuLoad](#cpuload)
+    1. [basic](#basic-1)
+    2. [cpuLoad | cpuLoadDiscrete](#cpuload-cpuloaddiscrete)
+    3. [enabledPorts](#enabledports)
 3. [Configuring Interface Energy Model](#configuring-interface-energy-model)
-    1. [dataRate](#datarate)
-<!--     2. [linear](#linear) -->
-<!--     3. [complete](#complete) -->
+    1. [basic](#basic-2)
+    2. [dataRate](#datarate)
 
 ---
 
@@ -36,6 +36,8 @@ This file is used to describe and configure the templates for energy models pres
 ```
 ---
 
+???? rever:
+
 #### NOTE: At the moment, the `OffConso` values described in the following models are not used, since turning off devices is not yet supported by the simulator.
 
 ---
@@ -51,7 +53,8 @@ model = "<model>"
 
 ---
 
-##### basic 
+##### basic <a id="basic-1"></a>
+
 This energy model has a constant consumption depending on the device state.
 
 ```toml
@@ -67,7 +70,7 @@ offConso = 20
 
 ---
 
-##### cpuLoad | cpuLoadDiscrete
+##### cpuLoad | cpuLoadDiscrete <a id="cpuload-cpuloaddiscrete"></a>
 These energy models calculate the estimated energy consumption based on the CPU usage percentage of the switch. It's possible to define different consumption values for different usage percentages. In the normal `cpuLoad` model, actual consumption is calculated using linear interpolation between the defined values. In the `cpuLoadDiscrete` model, the consumption returned depends on the interval where the CPU usage fits.
 
 ```toml
@@ -79,7 +82,7 @@ consumptions = [20.0, 40.0, 90.0]
 
 - `percentages`: The discrete percentages steps **(From 0.0 to 1.0)**
 
-- `consumptions`: The correspondent energy consumptions for each percentage step.
+- `consumptions`: The correspondent energy consumptions in Watts for each percentage step.
 
 ---
 
@@ -94,11 +97,11 @@ dataRates = ["10Gbps", "25Gbps", "100Gbps"]
 consumptions = [0.31, 0.52, 1.57]
 ```
 
-- `idleConso`: The base/idle consumption of the chassis. 
+- `idleConso`: The base/idle consumption in Watts of the chassis. 
 
-- `dataRates`: The list of ports data rates.
+- `dataRates`: The list of the available ports data rates.
 
-- `consumptions`: The correspondent energy consumption for each port data rate.
+- `consumptions`: The correspondent energy consumption in Watts for each port data rate.
 
 ---
 
@@ -110,7 +113,24 @@ model = "<model>"
 #<model configs>
 ```
 
-- `model`: The base model for this Energy model. Currently, only one model is available: `dataRate`. 
+- `model`: The base model for this Energy model. Currently, only one model is available: `basic` and `dataRate`. 
+
+---
+
+
+##### basic <a id="basic-2"></a>
+This energy model has a constant consumption depending on the interface state.
+
+```toml
+[...]
+model = "basic"
+onConso = 50 
+offConso = 20 
+```
+
+- `OnConso`: The interface power consumption in Watts when it is on. 
+
+- `OffConso`: The interface power consumption in Watts when it is off.
 
 ---
 
@@ -128,6 +148,6 @@ unit = "1Gbps"
 
 - `dataRates`: The list of data rates.
 
-- `consumptions`: The correspondent energy consumption per unit depending on the data rate.
+- `consumptions`: The correspondent energy consumption in Watts per unit depending on the data rate.
 
 - `unit`: The traffic unit.
