@@ -1,5 +1,5 @@
 # Units 
-For more details on Time and Data Rate units refer to [ns-3's documentation](https://www.nsnam.org/doxygen/)
+<!-- For more details on Time and Data Rate units refer to [ns-3's documentation](https://www.nsnam.org/doxygen/) -->
 
 ## Contents
 
@@ -16,20 +16,17 @@ Time fields follow the format:
 - Supported units:
 
   ```
-  s (seconds)
-  ms (milliseconds)
-  us (microseconds)
   ns (nanoseconds)
-  ps (picoseconds)
-  fs (femtoseconds)
+  us (microseconds)
+  ms (milliseconds)
+  s (seconds)
   min (minutes)
   h (hours)
-  d (days)
-  y (years)
   ```
 
 - Examples:
   ```
+  "1ns"
   "60s"
   "30min"
   "24h"
@@ -45,13 +42,36 @@ Data Rate fields follow the format: `"<value><unit>"`
 
   ```
   bps, b/s, Bps, B/s
-  kbps, kb/s, Kbps, Kb/s, kBps, kB/s, KBps, KB/s, Kib/s, KiB/s
-  Mbps, Mb/s, MBps, MB/s, Mib/s, MiB/s
-  Gbps, Gb/s, GBps, GB/s, Gib/s, GiB/s
+  kbps, kb/s, kBps, kB/s, Kbps, Kb/s, KBps, KB/s
+  Kips, Kib/s, KiBps, KiB/s
+  Mbps, Mb/s, MBps, MB/s, 
+  Mibps, Mib/s, MiBps, MiB/s
+  Gbps, Gb/s, GBps, GB/s, 
+  Gibps, Gib/s, GiBps, GiB/s
   ```
 
 - Examples:
   ```
   "128kb/s"
+  "1MBps"
   "1Gbps"
+  "1024GiB/s"
   ```
+
+- Conversion:
+
+  | Prefix | Value |
+  | ------ | ----- |
+  | "b" | 1 |
+  | "k", "K" | 1000 |
+  | "Ki" | 1024 |
+  | "M"	| 1000000 |
+  | "Mi" | 1024 Ki |
+  | "G" | 10^9 |
+  | "Gi" | 1024 Mi |
+
+  | Symbol | Meaning |
+  | ------ | ------- |
+  | "b" | bits |
+  | "B" | 8-bit bytes |
+  | "ps", "/s" | per second |
