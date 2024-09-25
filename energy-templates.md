@@ -6,7 +6,7 @@ This file is used to describe and configure the templates for energy models pres
 1. [File format](#file-format)
 2. [Configuring Chassis Energy Model](#configuring-chassis-energy-model)
     1. [basic](#basic-1)
-    2. [cpuLoad | cpuLoadDiscrete](#cpuload-cpuloaddiscrete)
+    2. [cpuLoad | cpuLoadDiscrete](#cpuload--cpuloaddiscrete)
     3. [enabledPorts](#enabledports)
 3. [Configuring Interface Energy Model](#configuring-interface-energy-model)
     1. [basic](#basic-2)
@@ -70,7 +70,7 @@ offConso = 20
 
 ---
 
-##### cpuLoad | cpuLoadDiscrete <a id="cpuload-cpuloaddiscrete"></a>
+##### cpuLoad | cpuLoadDiscrete
 These energy models calculate the estimated energy consumption based on the CPU usage percentage of the switch. It's possible to define different consumption values for different usage percentages. In the normal `cpuLoad` model, actual consumption is calculated using linear interpolation between the defined values. In the `cpuLoadDiscrete` model, the consumption returned depends on the interval where the CPU usage fits.
 
 ```toml
