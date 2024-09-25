@@ -114,7 +114,7 @@ FAZER ISTO !!! funções mais importantes e assim ...
 
 To use a custom controller in the simulation set the `CONTROLLER` flag to the filename and the name of the intended controller:
 ```
-make run CONTROLLER=my-controller.NewRoutingAlgo
+make run ROUTING=my-controller.NewRoutingAlgo
 ```
 
 ---
