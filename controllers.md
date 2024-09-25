@@ -10,71 +10,51 @@
 
 ## Writing a custom controller
 
-1. Create a new header and source files:
+1. Create a new files
     ```
-    Flexcomm-Simulator/ns-3.35/src/ofswitch13/model/my-controller.h
-    Flexcomm-Simulator/ns-3.35/src/ofswitch13/model/my-controller.cc
+    Flexcomm-Simulator-Flow/routing/my-controller.py
     ```
 
-2. Include the new files into `Flexcomm-Simulator/ns-3.35/src/ofswitch13/wscript`
+2. Create a new class extending `algo.RoutingAlgorithm` and overriding the abstract methods. Example:
     ```python
-        module.source = [
-        # ...
-        'model/my-controller.cc',
-        ]
+    class NewRoutingAlgo(algo.RoutingAlgorithm):
+        def __init__(self, graph: nx.Graph, ref: str = None) -> None:
+            super().__init__(graph)
+            
+            # ...
 
-        # ...
-        # ...
+        def new_flow(self, app: Application):
+            # ...
 
-        header.source = [
-        # ...
-        'model/my-controller.h',
-        ]
-
+        def remove_flow(self, app: Application):
+            # ...
     ```
 
-3. Create a new class extending `OFSwitch13Controller` and overriding the required handlers. For more details on the available handlers refer to [OFSwitch13's Documentation](http://www.lrc.ic.unicamp.br/ofswitch13/ofswitch13.pdf). Refer to [simple-controller.h](https://github.com/RuiCunhaM/Flexcomm-Simulator/blob/master/ns-3.35/src/ofswitch13/model/simple-controller.h) for an example:
-    ```cpp
-    class MyController : public OFSwitch13Controller {
-
-    public:
-        static TypeId GetTypeId (void);
-        ofl_err HandlePacketIn (struct ofl_msg_packet_in *msg, Ptr<const RemoteSwitch> sw,
-                                uint32_t xid);
-        // ...
-
-    protected:
-        void HandshakeSuccessful (Ptr<const RemoteSwitch> sw);
-        // ...
-    }
-    ```
-
-4. Write your custom logic. Refer to [simple-controller.cc](https://github.com/RuiCunhaM/Flexcomm-Simulator/blob/master/ns-3.35/src/ofswitch13/model/simple-controller.cc) for an example.
-    ```cpp
-    TypeId MyController::GetTypeId (void) {
-        static TypeId tid = TypeId ("ns3::MyController")
-                                .SetParent<OFSwitch13Controller> ()
-                                .SetGroupName ("OFSwitch13")
-                                .AddConstructor<MyController> ();
-        return tid;
-    }
-
-    void MyController::HandshakeSuccessful (Ptr<const RemoteSwitch> sw) {
-        // TODO:
-    }
-
-    ofl_err MyController::HandlePacketIn (struct ofl_msg_packet_in *msg, 
-                                          Ptr<const RemoteSwitch> sw, uint32_t xid) {
-        // TODO:
-    }
-
-    // ...
+3. Write your custom logic. Refer to [ospf.py](https://github.com/extinto77/Flexcomm-Simulator-Flow/blob/master/routing/ospf.py) for an example:
+    ```python
+    class Ospf(algo.RoutingAlgorithm):
+        def __init__(self, graph: nx.Graph, ref: str = None) -> None:
+            super().__init__(graph)
+            self.state = {}
+        
+        def new_flow(self, app: Application):
+            self.state[app] = nx.shortest_path(
+                self.graph, app.host.name, app.remote.name, self._calculate_weight
+            )
+            self._apply_routing()
+        
+        def remove_flow(self, app: Application):
+            self.state.pop(app)
+            self._apply_routing()
     ```
 
 ---
 
 ## Interacting with the network
 
+FAZER ISTO !!! funções mais importantes e assim ...
+
+<!-- 
 - The [Topology](https://github.com/RuiCunhaM/Flexcomm-Simulator/blob/master/ns-3.35/src/topology/model/topology.h) class provides a simple wrapper around a [boost::graph](https://www.boost.org/doc/libs/1_82_0/libs/graph/doc/index.html) representation of the entire network:
     - Access the Graph
         ```cpp
@@ -126,15 +106,15 @@
 
     // Convert Node Id to Data Path Id 
     uint64_t Id2PdId (uint32_t Id);
-    ```
+    ``` -->
 
 ---
 
 ## Using a custom controller
 
-To use a custom controller in the simulation set the `CONTROLLER` flag equal to the `TypeId` of the intended controller:
+To use a custom controller in the simulation set the `CONTROLLER` flag to the filename and the name of the intended controller:
 ```
-make run CONTROLLER=ns3::MyController
+make run CONTROLLER=my-controller.NewRoutingAlgo
 ```
 
 ---
