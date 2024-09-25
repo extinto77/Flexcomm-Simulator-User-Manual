@@ -27,9 +27,8 @@ This file is used to describe and configure the links present in the simulation.
 ```toml
 [link]
 edges = ["node1", "node2"]
-dataRate = "1Gbps"
-delay = "1ms"
-pcap = true
+dataRate = "10Gbps"
+delay = "100ms"
 ```
 
 - `edges`: List containing the two nodes connected by this link.
@@ -37,8 +36,7 @@ pcap = true
 - `dataRate`: The data rate of this link. The default value is `"1Gbps"`.
 
 - `delay`: The delay of this link. The default value is `"1ns"`.
-
-- `pcap`: When `true`, a capture is created for each interface of this link. The default value is `false`.
+**At the moment, '`delay`' parameter have no impact.**
 
 ---
 
